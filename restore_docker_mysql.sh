@@ -10,7 +10,11 @@ echo "Enter the backup file name you want to use:"
 
 ls $dir
 read file_name
-# Enters mysql container, indicates db name and restores from selected host file
+
+echo "Creating Database" $db
+
+docker exec -i $container mysql -u $user --password=$passwd -e "DROP DATABASE "$db";"
+docker exec -i $container mysql -u $user --password=$passwd -e "CREATE DATABASE "$db";"
 docker exec -i $container mysql -u $user --password=$passwd $db < $dir$file_name
 
-# If wordpress db was fully deleted, create db with same name on container first and then restore.
+echo "Restore of" $db "complete."
